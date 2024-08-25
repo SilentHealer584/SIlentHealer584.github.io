@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umbra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;  /* Align elements in a column */
+            height: 100vh;
+            margin: 0;
+        }
 
+        .logo {
+            width: 80px;
+            margin-bottom: 20px; /* Add some space below the logo */
+            border: solid white 0px;
+            border-radius: 10px;;
+        }
+
+        .container {
+            width: 600px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .chat-box {
+            height: 500px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        #username {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        #message {
+            width: 96%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #randomize {
+            width: 25%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <img src="logo.png" class="logo">
+
+    <div class="container" id="login-screen">
+        <h2>Enter Username</h2>
+        <input type="text" id="username" placeholder="Your username">
+        <button id="randomize" onclick="generateRandomUsername()">⚄</button>
+        <button onclick="startChat()">Start Chat</button>
+    </div>
+
+    <div class="container" id="chat-screen" style="display:none;">
+        <div id="chat-box" class="chat-box"></div>
+        <input type="text" id="message" placeholder="Type your message here...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script>
+        let socket;
+        let username = '';
+
+        function startChat() {
+            username = document.getElementById('username').value.trim();
+            if (username !== '') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('chat-screen').style.display = 'block';
+
+                socket = io();
+                
+                // Load the last 20 messages when the user joins
+                socket.on('load messages', function(messages) {
+                    const chatBox = document.getElementById('chat-box');
+                    messages.forEach(function(msg) {
+                        const messageElement = document.createElement('p');
+                        messageElement.textContent = msg;
+                        chatBox.appendChild(messageElement);
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+
+                // Listen for new messages
+                socket.on('message', function(msg) {
+                    const chatBox = document.getElementById('chat-box');
+                    const messageElement = document.createElement('p');
+                    messageElement.textContent = msg;
+                    chatBox.appendChild(messageElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                const fullMessage = `${username}: ${message}`;
+                socket.send(fullMessage);
+                messageInput.value = '';
+            }
+        }
+
+        function generateRandomUsername() {
+            const adjectives = ['Chained', 'Silent', 'Secret', 'Dark', 'Lone', 'Shadowy', 'Mysterious', 'Stealthy', 'Cryptic', 'Phantom', 'Sinister', 'Rogue', 'Covert'];
+            const animals = ['Viper', 'Scorpion', 'Eagle', 'Shark', 'Raven', 'Wolf', 'Falcon', 'Piranha', 'Widow', 'Coyote', 'Eel', 'Deathstalker', 'Squid'];
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+            const randomUsername = `${randomAdjective}${randomAnimal}${Math.floor(Math.random() * 100000)}`;
+            document.getElementById('username').value = randomUsername;
+        }
+    </script>
+</body>
+</html>
