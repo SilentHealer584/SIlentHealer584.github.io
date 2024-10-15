@@ -25,15 +25,12 @@
         }
 
        .card {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            width: 120px;
+            width: 120px; /* Adjust this if needed */
+            position: relative; /* Make the card the reference point for the absolute positioning inside it */
             background-color: #ededed;
         }
 
@@ -71,15 +68,15 @@
 
         .card .rank {
             position: absolute;
-            top: 5px;  /* Adjust to fit your design */
-            left: 5px; /* Adjust to fit your design */
+            top: 5px;  /* Adjust this to fit the layout */
+            left: 5px; /* Adjust this to fit the layout */
         }
         
-        /* Rank image */
+        /* Rank image styling */
         .card .rank img {
             width: 20px;  /* Size of the rank image */
             height: 20px; /* Size of the rank image */
-            border-radius: 50%; /* Optional, for circular shape */
+            border-radius: 50%; /* Optional, if you want it circular */
         }
 
         .card.read {
