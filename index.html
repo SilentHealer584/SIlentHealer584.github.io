@@ -110,6 +110,10 @@
             card.appendChild(medallionDiv);
             card.appendChild(nameElement);
             card.appendChild(rankDiv);
+
+            card.addEventListener('click', () => {
+                card.classList.toggle('read');
+            });
             
             cardContainer.appendChild(card);
         }
