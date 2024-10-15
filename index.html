@@ -24,20 +24,19 @@
             max-height: 90vh;
         }
 
-        .card {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+       .card {
+            border: 1px solid #ccc;
             padding: 20px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-            width: 150px; /* Control card width */
+            margin-bottom: 20px;
+            width: 200px; /* Or whatever fits your layout */
+            position: relative; /* For other elements if needed */
         }
-
+        
+        /* Medallion (parent) */
         .card .medallion {
-            position: relative; /* Needed for the absolute positioning of the rank */
+            position: relative; /* This is crucial for absolute positioning inside it */
             width: 100%;
-            height: 100px; 
+            height: 100px; /* Or any size you want */
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             display: flex;
@@ -68,16 +67,13 @@
             position: absolute;
             top: 5px;  /* Adjust to fit your design */
             left: 5px; /* Adjust to fit your design */
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
+        /* Rank image */
         .card .rank img {
             width: 20px;  /* Size of the rank image */
             height: 20px; /* Size of the rank image */
-            border-radius: 50%;
-            opacity: 1;
+            border-radius: 50%; /* Optional, for circular shape */
         }
 
         .card.read {
