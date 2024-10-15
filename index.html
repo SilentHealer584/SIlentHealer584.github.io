@@ -93,38 +93,56 @@
 
         const cardContainer = document.getElementById('card-container');
 
-        for (let i = 0; i < NamesList.length; i++) {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            
-            const medallionDiv = document.createElement('div');
-            medallionDiv.classList.add('medallion');
-            
-            const medallionImage = document.createElement('img');
-            medallionImage.src = 'https://raw.githubusercontent.com/SilentHealer584/SilentHealer584.github.io/main/Images/'+MedallionList[i]+'.png';
-            medallionDiv.appendChild(medallionImage);
-            
-            const nameElement = document.createElement('div');
-            nameElement.classList.add('name');
-            nameElement.textContent = NamesList[i];
-            
-            const rankDiv = document.createElement('div');
-            rankDiv.classList.add('rank');
-            
-            const rankImage = document.createElement('img');
-            rankImage.src = 'https://raw.githubusercontent.com/SilentHealer584/SilentHealer584.github.io/main/Ranks/Rank'+RankList[i]+'.png';
-            rankDiv.appendChild(rankImage);
-            
-            card.appendChild(medallionDiv);
-            card.appendChild(nameElement);
-            card.appendChild(rankDiv);
+    // Load the "read" state from localStorage
+    function loadReadState(index) {
+        return localStorage.getItem(`card-read-${index}`) === 'true';
+    }
 
-            card.addEventListener('click', () => {
-                card.classList.toggle('read');
-            });
-            
-            cardContainer.appendChild(card);
+    // Save the "read" state to localStorage
+    function saveReadState(index, isRead) {
+        localStorage.setItem(`card-read-${index}`, isRead);
+    }
+
+    for (let i = 0; i < NamesList.length; i++) {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        
+        const medallionDiv = document.createElement('div');
+        medallionDiv.classList.add('medallion');
+        
+        const medallionImage = document.createElement('img');
+        medallionImage.src = 'https://raw.githubusercontent.com/SilentHealer584/SilentHealer584.github.io/main/Images/' + MedallionList[i] + '.png';
+        medallionDiv.appendChild(medallionImage);
+        
+        const nameElement = document.createElement('div');
+        nameElement.classList.add('name');
+        nameElement.textContent = NamesList[i];
+        
+        const rankDiv = document.createElement('div');
+        rankDiv.classList.add('rank');
+        
+        const rankImage = document.createElement('img');
+        rankImage.src = 'https://raw.githubusercontent.com/SilentHealer584/SilentHealer584.github.io/main/Ranks/Rank' + RankList[i] + '.png';
+        rankDiv.appendChild(rankImage);
+        
+        card.appendChild(medallionDiv);
+        card.appendChild(nameElement);
+        card.appendChild(rankDiv);
+
+        // Mark card as read if it was previously marked
+        if (loadReadState(i)) {
+            card.classList.add('read');
         }
+
+        // Toggle "read" status on click and save it
+        card.addEventListener('click', () => {
+            card.classList.toggle('read');
+            const isRead = card.classList.contains('read');
+            saveReadState(i, isRead);
+        });
+        
+        cardContainer.appendChild(card);
+    }
     </script>
 </body>
 </html>
